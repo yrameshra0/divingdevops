@@ -10,3 +10,12 @@ variable "AMIS" {
         us-east-1 = "ami-13be557e"
     }
 }
+variable "PUBLIC_KEY_FILE_PATH" {
+    default = "justice_league.pub"
+}
+variable "INSTANCE_USERNAME" {
+    default = "ec2-user"
+}
+variable "PRIVATE_KEY_FILE_PATH" {
+    default = "justice_league"
+}
