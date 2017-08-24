@@ -16,7 +16,8 @@ resource "aws_instance" "control_hub" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo mv /tmp/justice_league.pem /home",
+      "sudo chmod 400 /tmp/justice_league.pem",
+      "sudo mv /tmp/justice_league.pem /home/${var.INSTANCE_USER}/",
     ]
   }
 
@@ -31,7 +32,7 @@ resource "aws_instance" "control_hub" {
 }
 
 output "ip" {
-  value = "${aws_instance.control_hub.public_ip}"
+  value = "\n\r Control Hub - ${aws_instance.control_hub.public_ip} \n\r For Web - ${aws_instance.for_web.private_ip} \n\r For Service - ${aws_instance.for_service.private_ip} \n\r For Database - ${aws_instance.for_database.private_ip}"
 }
 
 resource "aws_instance" "for_web" {
