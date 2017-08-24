@@ -14,6 +14,12 @@ resource "aws_instance" "control_hub" {
     destination = "/tmp/justice_league.pem"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mv /tmp/justice_league.pem /home",
+    ]
+  }
+
   tags {
     Name = "control_hub"
   }
