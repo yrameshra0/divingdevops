@@ -18,6 +18,8 @@ resource "aws_instance" "control_hub" {
     inline = [
       "sudo chmod 400 /tmp/justice_league.pem",
       "sudo mv /tmp/justice_league.pem /home/${var.INSTANCE_USER}/",
+      "sudo yum upgrade -y",
+      "sudo pip install ansible",
     ]
   }
 
