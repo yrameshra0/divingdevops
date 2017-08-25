@@ -6,4 +6,5 @@
 terraform.tfstate*
 **/terraform.tfvars
 *.pem
-
+#Output files
+output.txt

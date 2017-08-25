@@ -1,0 +1,4 @@
+[control]
+ip-172-31-27-217 ansible_connection=local
+[slave]
+ip-172-31-29-16
