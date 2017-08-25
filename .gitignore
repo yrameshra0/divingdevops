@@ -1,2 +1,9 @@
+#Idea
 .idea
 *.iml
+#Terraform
+**/.terraform/*
+terraform.tfstate*
+**/terraform.tfvars
+*.pem
+
