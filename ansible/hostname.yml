@@ -1,4 +1,4 @@
 ---
   - hosts: all
-    task:
+    tasks:
     - command: hostname

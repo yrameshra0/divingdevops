@@ -14,12 +14,28 @@ resource "aws_instance" "instance1" {
     destination = "/tmp/justice_league.pem"
   }
 
+  provisioner "file" {
+    source      = "database.yml"
+    destination = "/tmp/database.yml"
+  }
+
+  provisioner "file" {
+    source      = "loadbalancer.yml"
+    destination = "/tmp/loadbalancer.yml"
+  }
+
+  provisioner "file" {
+    source      = "hostname.yml"
+    destination = "/tmp/hostname.yml"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo chmod 400 /tmp/justice_league.pem",
       "sudo mv /tmp/justice_league.pem /home/ec2-user",
       "sudo yum upgrade -y",
       "sudo pip install ansible",
+      "sudo mv /tmp/*.yml /home/ec2-user",
     ]
   }
 
@@ -48,5 +64,19 @@ resource "aws_instance" "instance2" {
 
   provisioner "local-exec" {
     command = "echo INSTANCE2 HOSTNAME -- ${aws_instance.instance2.private_dns} >> output.txt"
+  }
+}
+
+resource "aws_instance" "instance3" {
+  ami           = "ami-47205e28"
+  instance_type = "t2.micro"
+  key_name      = "justice_league"
+
+  tags {
+    Name = "instance3"
+  }
+
+  provisioner "local-exec" {
+    command = "echo INSTANCE3 HOSTNAME -- ${aws_instance.instance3.private_dns} >> output.txt"
   }
 }
