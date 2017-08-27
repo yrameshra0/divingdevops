@@ -4,8 +4,8 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-resource "aws_instance" "instance1" {
-  ami           = "ami-47205e28"
+resource "aws_instance" "control_hub" {
+  ami           = "ami-3c374c53"
   instance_type = "t2.micro"
   key_name      = "justice_league"
 
@@ -15,68 +15,52 @@ resource "aws_instance" "instance1" {
   }
 
   provisioner "file" {
-    source      = "database.yml"
-    destination = "/tmp/database.yml"
-  }
-
-  provisioner "file" {
-    source      = "loadbalancer.yml"
-    destination = "/tmp/loadbalancer.yml"
-  }
-
-  provisioner "file" {
-    source      = "hostname.yml"
-    destination = "/tmp/hostname.yml"
+    source      = "plays/"
+    destination = "/tmp/"
   }
 
   provisioner "remote-exec" {
     inline = [
+      "sudo apt-get install software-properties-common",
+      "sudo apt-add-repository ppa:ansible/ansible -y",
+      "sudo apt udpate",
+      "sudo apt upgrade -y",
+      "sudo apt-get install ansible -y",
+      "sudo mv /tmp/*.yml /home/ubuntu",
       "sudo chmod 400 /tmp/justice_league.pem",
-      "sudo mv /tmp/justice_league.pem /home/ec2-user",
-      "sudo yum upgrade -y",
-      "sudo pip install ansible",
-      "sudo mv /tmp/*.yml /home/ec2-user",
+      "sudo mv /tmp/justice_league.pem /home/ubuntu",
     ]
   }
 
   connection {
-    user        = "ec2-user"
+    user        = "ubuntu"
     private_key = "${file("justice_league.pem")}"
   }
 
   tags {
-    Name = "instance1"
-  }
-
-  provisioner "local-exec" {
-    command = "echo INSTANCE1 HOSTNAME -- ${aws_instance.instance1.private_dns} >> output.txt && echo INSTANCE1 HOSTNAME -- ${aws_instance.instance1.public_ip} >> output.txt"
+    Name = "control_hub"
   }
 }
 
-resource "aws_instance" "instance2" {
-  ami           = "ami-47205e28"
+output "control_hub_public_ip" {
+  value = "${aws_instance.control_hub.public_ip}"
+}
+
+output "control_hub_private_ip" {
+  value = "${aws_instance.control_hub.private_ip}"
+}
+
+resource "aws_instance" "instance" {
+  count         = 1
+  ami           = "ami-3c374c53"
   instance_type = "t2.micro"
   key_name      = "justice_league"
 
   tags {
-    Name = "instance2"
-  }
-
-  provisioner "local-exec" {
-    command = "echo INSTANCE2 HOSTNAME -- ${aws_instance.instance2.private_dns} >> output.txt"
+    Name = "instance-${count.index}"
   }
 }
 
-resource "aws_instance" "instance3" {
-  ami           = "ami-47205e28"
-  instance_type = "t2.micro"
-  key_name      = "justice_league"
-
-  tags {
-    Name = "instance3"
-  }
-
-  provisioner "local-exec" {
-    command = "echo INSTANCE3 HOSTNAME -- ${aws_instance.instance3.private_dns} >> output.txt"
-  }
+output "instances_private_ips" {
+  value = ["${aws_instance.instance.*.private_ip}"]
 }
