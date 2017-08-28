@@ -15,7 +15,12 @@ resource "aws_instance" "control_hub" {
   }
 
   provisioner "file" {
-    source      = "plays/"
+    source      = "plays"
+    destination = "/tmp/"
+  }
+
+  provisioner "file" {
+    source      = "demo"
     destination = "/tmp/"
   }
 
@@ -24,11 +29,13 @@ resource "aws_instance" "control_hub" {
       "sudo apt-get install software-properties-common",
       "sudo apt-add-repository ppa:ansible/ansible -y",
       "sudo apt udpate",
-      "sudo apt upgrade -y",
       "sudo apt-get install ansible -y",
-      "sudo mv /tmp/*.yml /home/ubuntu",
-      "sudo chmod 400 /tmp/justice_league.pem",
+      "sudo apt update",
+              "sudo apt upgrade -y",
+      "sudo mv /tmp/plays /home/ubuntu",
+      "sudo mv /tmp/demo /home/ubuntu/plays/",
       "sudo mv /tmp/justice_league.pem /home/ubuntu",
+      "sudo chmod 400 /home/ubuntu/justice_league.pem",
     ]
   }
 

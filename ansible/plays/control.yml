@@ -1,7 +1,7 @@
 ---
 -
   hosts: control_hub
-  sudo: true
+  become: true
   tasks:
     -
       apt: "name={{item}} state=present update_cache=yes"
