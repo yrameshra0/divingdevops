@@ -51,7 +51,7 @@ output "control_hub_private_ip" {
 }
 
 resource "aws_instance" "instance" {
-  count         = 1
+  count         = 2
   ami           = "ami-3c374c53"
   instance_type = "t2.micro"
   key_name      = "justice_league"
