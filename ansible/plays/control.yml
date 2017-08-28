@@ -1,0 +1,10 @@
+---
+-
+  hosts: control_hub
+  sudo: true
+  tasks:
+    -
+      apt: "name={{item}} state=present update_cache=yes"
+      name: "install control dependencies"
+      with_items:
+        - curl

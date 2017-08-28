@@ -1,7 +1,7 @@
 ---
 -
-  sudo: yes
   hosts: webserver
+  sudo: true
   tasks:
     -
       apt: "name={{item}} state=present update_cache=yes"
@@ -11,3 +11,6 @@
         - libapache2-mod-wsgi
         - python-pip
         - python-virtualenv
+    -
+      name: "ensure apache2 started and working as expected"
+      service: "name=apache2 state=started enabled=true"

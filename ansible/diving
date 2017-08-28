@@ -1,8 +1,8 @@
-[control]
-ip-172-31-29-66 ansible_connection=local
+[control_hub]
+ip-172-31-20-183 ansible_connection=local
 [database]
-ip-172-31-25-211
+ip-172-31-22-165
 [loadbalancer]
-ip-172-31-25-211
+ip-172-31-22-165
 [webserver]
-ip-172-31-25-211
+ip-172-31-22-165

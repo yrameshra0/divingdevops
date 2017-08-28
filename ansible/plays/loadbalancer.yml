@@ -1,8 +1,11 @@
 ---
 -
-  sudo: yes
   hosts: loadbalancer
+  sudo: true
   tasks:
     -
-      name: "install nginx"
       apt: "name=nginx state=present update_cache=yes"
+      name: "install nginx"
+    -
+      name: "ensure nginx started and working as expected"
+      service: "name=nginx state=started enabled=true"

@@ -1,8 +1,11 @@
 ---
 -
   hosts: database
-  sudo: yes
+  sudo: true
   tasks:
     -
-      name: "install mysql server"
       apt: "name=mysql-server state=present update_cache=yes"
+      name: "install mysql server"
+    -
+      name: "ensure mysql started and working as expected"
+      service: "name=mysql state=started enabled=yes"
