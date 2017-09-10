@@ -1,11 +1,32 @@
 ---
 -
-  hosts: database
   become: true
+  handlers:
+    -
+      name: "restart mysql"
+      service: "name=mysql state=restarted"
+  hosts: database
   tasks:
     -
-      apt: "name=mysql-server state=present update_cache=yes"
-      name: "install mysql server"
+      name: "install tools"
+      apt: "name={{item}} state=present update_cache=yes"
+      with_items:
+        - python-mysqldb
+        - mysql-server
+
     -
       name: "ensure mysql started and working as expected"
       service: "name=mysql state=started enabled=yes"
+
+    -
+      lineinfile: "dest=/etc/mysql/my.cnf regexp=^bind-address line=\"bind-address=0.0.0.0\""
+      name: "ensure mysql listening on all ports"
+      notify: "restart mysql"
+
+    -
+      name: "create demo database"
+      mysql_db: "name=demo state=present"
+
+    -
+      name: "create demo user"
+      mysql_user: "name=demo password=demo priv=demo.*:ALL host='%' state=present"

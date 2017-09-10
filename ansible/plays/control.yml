@@ -1,10 +1,10 @@
 ---
 -
-  hosts: control_hub
   become: true
+  hosts: control_hub
   tasks:
     -
-      apt: "name={{item}} state=present update_cache=yes"
-      name: "install control dependencies"
+      apt: name={{item}} state=present update_cache=yes
+      name: install control dependencies
       with_items:
         - curl

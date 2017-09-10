@@ -1,11 +1,23 @@
 ---
 -
-  hosts: loadbalancer
   become: true
+  handlers:
+    -
+      name: "restart nginx"
+      service: "name=nginx state=restarted"
+  hosts: loadbalancer
   tasks:
     -
       apt: "name=nginx state=present update_cache=yes"
       name: "install nginx"
     -
-      name: "ensure nginx started and working as expected"
-      service: "name=nginx state=started enabled=true"
+      name: "configure nginx site"
+      template: "src=templates/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644"
+    -
+      file: "path=/etc/nginx/site-enabled/default state=absent"
+      name: "de-activate default nginx site"
+      notify: "restart nginx"
+    -
+      file: "src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link"
+      name: "active demo nginx site"
+      notify: "restart nginx"

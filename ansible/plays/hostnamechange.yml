@@ -1,0 +1,9 @@
+---
+-
+  become: true
+  hosts: machine
+  tasks:
+    -
+      name: "change hostname"
+      hostname: "name=CEC-PPE-APP-1a"
+      wait_for: "host=CEC-PPE-APP-1a port=22 search_regex=OpenSSH"

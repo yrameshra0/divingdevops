@@ -1,7 +1,7 @@
 ---
 -
-  hosts: loadbalancer
   become: true
+  hosts: loadbalancer
   tasks:
     -
       service: "name=nginx state=stopped"

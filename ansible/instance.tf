@@ -24,6 +24,11 @@ resource "aws_instance" "control_hub" {
     destination = "/tmp/"
   }
 
+  provisioner "file" {
+    source      = "inventory"
+    destination = "/tmp/inventory"
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get install software-properties-common",
@@ -31,8 +36,9 @@ resource "aws_instance" "control_hub" {
       "sudo apt udpate",
       "sudo apt-get install ansible -y",
       "sudo apt update",
-              "sudo apt upgrade -y",
+      "sudo apt upgrade -y",
       "sudo mv /tmp/plays /home/ubuntu",
+      "sudo mv /tmp/inventory /etc/ansible/hosts",
       "sudo mv /tmp/demo /home/ubuntu/plays/",
       "sudo mv /tmp/justice_league.pem /home/ubuntu",
       "sudo chmod 400 /home/ubuntu/justice_league.pem",
@@ -45,7 +51,7 @@ resource "aws_instance" "control_hub" {
   }
 
   tags {
-    Name = "control_hub"
+    Name = "control-hub"
   }
 }
 
@@ -64,7 +70,7 @@ resource "aws_instance" "instance" {
   key_name      = "justice_league"
 
   tags {
-    Name = "instance-${count.index}"
+    Name = "${lookup(var.INSTANCE_NAMES, "instance-${count.index}")}"
   }
 }
 
