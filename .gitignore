@@ -8,3 +8,5 @@ terraform.tfstate*
 *.pem
 #Output files
 output.txt
+#Ansible
+*aws_credentials.yml
