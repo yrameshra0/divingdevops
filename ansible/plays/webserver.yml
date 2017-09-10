@@ -5,7 +5,7 @@
     -
       name: "restart apache2"
       service: "name=apache2 state=restarted"
-  hosts: webserver
+  hosts: tag_Name_webserver
   tasks:
     -
       apt: "name={{item}} state=present update_cache=yes"

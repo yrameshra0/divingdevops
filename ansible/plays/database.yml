@@ -5,7 +5,7 @@
     -
       name: "restart mysql"
       service: "name=mysql state=restarted"
-  hosts: database
+  hosts: tag_Name_loadbalancer_database
   tasks:
     -
       name: "install tools"

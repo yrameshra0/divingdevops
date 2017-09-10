@@ -1,7 +1,7 @@
 ---
 -
   become: true
-  hosts: control_hub
+  hosts: tag_Name_control_hub
   tasks:
     -
       apt: name={{item}} state=present update_cache=yes

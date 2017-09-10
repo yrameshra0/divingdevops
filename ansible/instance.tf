@@ -25,8 +25,8 @@ resource "aws_instance" "control_hub" {
   }
 
   provisioner "file" {
-    source      = "inventory"
-    destination = "/tmp/inventory"
+    source      = "dynamicinventory/"
+    destination = "/tmp/"
   }
 
   provisioner "remote-exec" {
@@ -37,11 +37,15 @@ resource "aws_instance" "control_hub" {
       "sudo apt-get install ansible -y",
       "sudo apt update",
       "sudo apt upgrade -y",
+      "sudo apt-get install python-pip -y",
+      "sudo pip install 'boto==2.46.1'",
       "sudo mv /tmp/plays /home/ubuntu",
-      "sudo mv /tmp/inventory /etc/ansible/hosts",
       "sudo mv /tmp/demo /home/ubuntu/plays/",
       "sudo mv /tmp/justice_league.pem /home/ubuntu",
       "sudo chmod 400 /home/ubuntu/justice_league.pem",
+      "sudo mv /tmp/ec2.py /etc/ansible/hosts",
+      "sudo chmod +x /etc/ansible/hosts",
+      "sudo mv /tmp/ec2.ini /etc/ansible/"
     ]
   }
 

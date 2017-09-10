@@ -5,7 +5,7 @@
     -
       name: "restart nginx"
       service: "name=nginx state=restarted"
-  hosts: loadbalancer
+  hosts: tag_Name_loadbalancer_database
   tasks:
     -
       apt: "name=nginx state=present update_cache=yes"
