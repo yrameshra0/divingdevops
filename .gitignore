@@ -9,4 +9,4 @@ terraform.tfstate*
 #Output files
 output.txt
 #Ansible
-*aws_credentials.yml
+*ec2.ini
